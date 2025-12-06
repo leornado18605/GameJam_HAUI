@@ -76,6 +76,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 5017181058034711457}
   m_SourcePrefab: {fileID: 100100000, guid: 86eb473ebf2deef4b82084f07823747d, type: 3}
+--- !u!95 &2530314461802216939 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 86eb473ebf2deef4b82084f07823747d, type: 3}
+  m_PrefabInstance: {fileID: 8248323137612120186}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &9130634694273842475 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 86eb473ebf2deef4b82084f07823747d, type: 3}
@@ -115,10 +120,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8be3c48a307946ab8dc77aa7798e6f9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveRadius: 10
+  moveRadius: 12
   newPointDelay: 2
   detectionRadius: 12
   targetTag: Player
+  walkSpeed: 1
+  runSpeed: 5
+  anim: {fileID: 2530314461802216939}
 --- !u!114 &6409986600607651508
 MonoBehaviour:
   m_ObjectHideFlags: 0
