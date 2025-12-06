@@ -70869,7 +70869,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2145986698693528810, guid: 00029c5dfa1558f4690a82ff8db053d4, type: 3}
       propertyPath: walkSpeed
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2145986698693528810, guid: 00029c5dfa1558f4690a82ff8db053d4, type: 3}
       propertyPath: moveRadius
@@ -172764,7 +172764,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2145986698693528810, guid: 00029c5dfa1558f4690a82ff8db053d4, type: 3}
       propertyPath: walkSpeed
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2145986698693528810, guid: 00029c5dfa1558f4690a82ff8db053d4, type: 3}
       propertyPath: moveRadius
@@ -259312,7 +259312,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2145986698693528810, guid: 00029c5dfa1558f4690a82ff8db053d4, type: 3}
       propertyPath: walkSpeed
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2145986698693528810, guid: 00029c5dfa1558f4690a82ff8db053d4, type: 3}
       propertyPath: moveRadius
