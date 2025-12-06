@@ -5,10 +5,23 @@ using UnityEngine;
 public class EnemyAttack : MonoBehaviour
 {
     public float health = 100f;
+    public float damage = 10f;
 
-    public void TakeDamage(float damage)
+    public void GetDamage(float damage)
     {
         health -= damage;
-        Debug.Log(health);
+        
+        gameObject.GetComponent<AIController>().Hit();
+        if (health <= 0)
+        {
+            gameObject.GetComponent<AIController>().Die();
+            Destroy(gameObject,4f);
+        }
     }
+
+    public void TakeDamage()
+    {
+        GetComponent<AIController>().TakeDamage(damage);
+    }
+    
 }
