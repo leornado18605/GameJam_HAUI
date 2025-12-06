@@ -30,7 +30,7 @@ public class PlayerController : MonoBehaviour
     public int currentAttack = 0;
 
     //Attack damage
-    
+    public float heath = 100f;
 
 
     private void Update()
