@@ -29,7 +29,8 @@ public class PlayerController : MonoBehaviour
     private float timeSinceAttack;
     public int currentAttack = 0;
 
-
+    //Attack damage
+    
 
 
     private void Update()
