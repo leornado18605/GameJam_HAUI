@@ -1,17 +1,87 @@
 using UnityEngine;
 using Cinemachine;
+using System;
 using System.Collections;
-
+using DG.Tweening;
 public class CameraController : MonoBehaviour
 {
     public CinemachineVirtualCamera[] cams;
-    public float[] delays = { 3, 2, 2, 3, 5, 3 };
+    public float[]                    delays = { 3, 2, 2, 3, 5, 3 };
 
-    private int currentIndex = -1;
+    private Action             onFinished;
+    public  Animator           aiAnimator; // ← thêm dòng này
+    public  FOVZoomAccelerated zoomScript; // gán trên Inspector cho camera số 2
 
     private void Awake()
     {
-        // Disable toàn bộ camera để Cinemachine không blend từ chúng
+        foreach (var cam in cams)
+        {
+            cam.gameObject.SetActive(true);
+            cam.Priority = 0;
+        }
+    }
+
+    public void StartSequence(Action callback)
+    {
+        onFinished = callback;
+        StartCoroutine(RunSequence());
+    }
+
+    private IEnumerator RunSequence()
+    {
+        ActivateOnly(0);
+        yield return new WaitForSeconds(delays[0]);
+
+        for (int i = 1; i < cams.Length; i++)
+        {
+            ActivateOnly(i);
+
+            // CAMERA SỐ 2
+            if (i == 2)
+            {
+                if (zoomScript != null)
+                {
+                    zoomScript.enabled = true; // BẮT BUỘC BẬT
+                    zoomScript.ResetZoom();    // RESET MỖI LẦN DÙNG
+
+                    DOVirtual.DelayedCall(2f, () =>
+                    {
+                        aiAnimator?.SetBool("Scream", true);
+                    });
+
+                }
+            }
+
+            yield return new WaitForSeconds(delays[i]);
+
+            if (i == 2)
+            {
+                aiAnimator?.SetBool("Scream", false);
+                zoomScript.enabled = false; // tắt đi khi xong
+            }
+        }
+
+        DeactivateAll();
+        onFinished?.Invoke();
+    }
+
+
+    private void ActivateOnly(int index)
+    {
+        for (int i = 0; i < cams.Length; i++)
+            cams[i].Priority = 0;
+
+        cams[index].Priority = 20;
+    }
+
+    private void DeactivateAll()
+    {
+        foreach (var cam in cams)
+            cam.Priority = 0;
+    }
+
+    public void DisableAllCameras()
+    {
         foreach (var cam in cams)
         {
             if (cam != null)
@@ -22,68 +92,4 @@ public class CameraController : MonoBehaviour
         }
     }
 
-    // Hàm để GameManager gọi
-    public void StartSequence()
-    {
-        StartCoroutine(RunSequence());
-    }
-
-    private IEnumerator RunSequence()
-    {
-        for (int i = 0; i < cams.Length; i++)
-        {
-            if (i == 3)
-            {
-                yield return StartCoroutine(DoSpecialFlicker(i));
-            }
-            else
-            {
-                Activate(i);
-                yield return new WaitForSeconds(delays[i]);
-            }
-        }
-    }
-
-    private IEnumerator DoSpecialFlicker(int index)
-    {
-        Activate(index);
-        yield return new WaitForSeconds(0.3f);
-
-        Deactivate(index);
-        yield return new WaitForSeconds(0.2f);
-
-        Activate(index);
-        yield return new WaitForSeconds(0.3f);
-
-        Deactivate(index);
-        yield return new WaitForSeconds(0.15f);
-
-        Activate(index);
-        yield return new WaitForSeconds(delays[index]);
-    }
-
-    private void Activate(int index)
-    {
-        // Tắt camera cũ
-        if (currentIndex >= 0)
-        {
-            cams[currentIndex].Priority = 0;
-            cams[currentIndex].gameObject.SetActive(false);
-        }
-
-        // Bật camera mới
-        cams[index].gameObject.SetActive(true);
-        cams[index].Priority = 20;
-
-        currentIndex = index;
-    }
-
-    private void Deactivate(int index)
-    {
-        cams[index].Priority = 0;
-        cams[index].gameObject.SetActive(false);
-
-        if (currentIndex == index)
-            currentIndex = -1;
-    }
 }

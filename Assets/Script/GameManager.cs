@@ -1,64 +1,63 @@
+using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
-public class GameManager : MonoBehaviour
+public class CinematicGameManager : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] private Transform triggerPoint;
-    [SerializeField] private Transform                            player;
-    [SerializeField] private CameraController                     cameraController;
-    [SerializeField] private Cinemachine.CinemachineVirtualCamera playerCamera;
+    public Transform triggerPoint;
+    public Transform player;
+
+    public CameraController cameraController;
 
     [Header("Settings")]
-    [SerializeField] private float triggerDistance = 1.5f;
+    public float triggerDistance = 1.5f;
 
-    private bool cutsceneStarted = false;
-
-    private void Start()
+    [SerializeField] private PlayerInput playerInput;
+    [SerializeField] private MouseFollowCamera mouse;
+    private                  bool        cutsceneStarted = false;
+    private void Awake()
     {
-        EnablePlayerCamera(); // Player camera bật trước
+        // CameraController ban đầu phải tắt
+        cameraController.gameObject.SetActive(false);
     }
 
     private void Update()
     {
         if (cutsceneStarted) return;
 
-        if (IsPlayerReachedTrigger())
+        if (Vector3.Distance(player.position, triggerPoint.position) <= triggerDistance)
         {
             StartCutscene();
         }
-    }
-
-    private bool IsPlayerReachedTrigger()
-    {
-        return Vector3.Distance(player.position, triggerPoint.position) <= triggerDistance;
     }
 
     private void StartCutscene()
     {
         cutsceneStarted = true;
 
-        // Tắt camera player để chuyển sang cutscene
-        DisablePlayerCamera();
+        // Tắt input của player
+        if (playerInput != null)
+            playerInput.enabled = false;
 
-        // Gọi cutscene
-        cameraController.StartSequence();
+        // Bật CameraController
+        this.mouse.enabled = false;
+        cameraController.gameObject.SetActive(true);
+
+        // Gọi cutscene + callback khi xong
+        cameraController.StartSequence(OnCutsceneFinished);
     }
 
-    private void EnablePlayerCamera()
+    private void OnCutsceneFinished()
     {
-        if (playerCamera != null)
-        {
-            playerCamera.Priority = 20;
-            playerCamera.gameObject.SetActive(true);
-        }
-    }
+        // Bật lại PlayerInput khi cutscene xong
+        if (playerInput != null)
+            playerInput.enabled = true;
+        this.mouse.enabled = true;
 
-    private void DisablePlayerCamera()
-    {
-        if (playerCamera != null)
-        {
-            playerCamera.Priority = 0;
-            playerCamera.gameObject.SetActive(false);
-        }
+        cameraController.DisableAllCameras();
+        // Nếu muốn tắt CameraController sau cutscene
+        cameraController.gameObject.SetActive(false);
+
     }
 }
