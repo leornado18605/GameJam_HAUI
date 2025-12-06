@@ -29,8 +29,7 @@ public class PlayerController : MonoBehaviour
     private float timeSinceAttack;
     public int currentAttack = 0;
 
-    //Attack damage
-    public float heath = 100f;
+    
 
 
     private void Update()
@@ -105,34 +104,42 @@ public class PlayerController : MonoBehaviour
 
     private void Attack()
     {
-
         if (Input.GetMouseButtonDown(0) && playerAnim.GetBool("Grounded") && timeSinceAttack > 0.8f)
         {
-            if (!isEquipped)
-                return;
+            var target = GetComponent<PlayerAttackController>().Target;
 
+            // 👉 Nếu có target thì xoay về phía target
+            if (target != null)
+            {
+                Vector3 dir = (target.gameObject.transform.position - transform.position).normalized;
+                dir.y = 0; 
+
+                if (dir != Vector3.zero)
+                {
+                    Quaternion lookRot = Quaternion.LookRotation(dir);
+                    transform.rotation = Quaternion.Slerp(transform.rotation, lookRot, 0.7f);
+                }
+            }
+
+            // Combo đánh
             currentAttack++;
             isAttacking = true;
 
             if (currentAttack > 3)
                 currentAttack = 1;
 
-            //Reset
+            // Reset combo nếu quá chậm
             if (timeSinceAttack > 1.0f)
                 currentAttack = 1;
 
-            //Call Attack Triggers
+            // Animation Attack1, Attack2, Attack3
             playerAnim.SetTrigger("Attack" + currentAttack);
 
-            //Reset Timer
+            // Reset timer
             timeSinceAttack = 0;
         }
-
-
-
-
-
     }
+    
 
     //This will be used at animation event
     public void ResetAttack()
