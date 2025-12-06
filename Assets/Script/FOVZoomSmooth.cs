@@ -1,36 +1,36 @@
 using UnityEngine;
 using Cinemachine;
 
-public class FOVZoomSmooth : MonoBehaviour
+public class FOVZoomAccelerated : MonoBehaviour
 {
     public CinemachineVirtualCamera vcam;
-    public float                    startFOV   = 60f;
-    public float                    targetFOV  = 12f;
-    public float                    smoothTime = 0.5f;
 
-    private float currentVelocity;
+    [Header("FOV Settings")]
+    public float startFOV  = 60f;
+    public float targetFOV = 12f;
+
+    [Header("Speed Control")]
+    public float initialSpeed = 5f;  // tốc độ ban đầu (chậm)
+    public float acceleration = 10f; // tốc độ tăng dần mỗi giây
+
+    private float currentSpeed;
 
     private void Start()
     {
         vcam.m_Lens.FieldOfView = startFOV;
+        currentSpeed            = initialSpeed;
     }
 
     private void Update()
     {
-        vcam.m_Lens.FieldOfView = CalculateSmoothFOV(
+        // Tăng tốc độ mỗi frame
+        currentSpeed += acceleration * Time.deltaTime;
+
+        // Zoom từ FOV hiện tại → targetFOV với tốc độ tăng dần
+        vcam.m_Lens.FieldOfView = Mathf.MoveTowards(
             vcam.m_Lens.FieldOfView,
-            targetFOV
+            targetFOV,
+            currentSpeed * Time.deltaTime
         );
     }
-
-    private float CalculateSmoothFOV(float current, float target)
-    {
-        return Mathf.SmoothDamp(
-            current,
-            target,
-            ref currentVelocity,
-            smoothTime
-        );
-    }
-
 }
