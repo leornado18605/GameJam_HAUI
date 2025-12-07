@@ -1,9 +1,11 @@
+using DG.Tweening;
 using UnityEngine;
 
 public class MouseFollowCamera : Singleton<MouseFollowCamera>
 {
+    private UnityEngine.PostProcessing.PostProcessingProfile profile;
     public Transform player;
-
+    public                   ScriptableObject          postProcess;
     [Header("Camera Settings")]
     public float mouseSensitivity = 300f;
     public float distance = 5f;
@@ -20,6 +22,12 @@ public class MouseFollowCamera : Singleton<MouseFollowCamera>
     public float minPitch = -20f;
     public float maxPitch = 60f;
 
+    public void OnEnable()
+    {
+        profile            = postProcess as UnityEngine.PostProcessing.PostProcessingProfile;
+        SoundManager.Instance.StopMusic();
+    }
+    
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -55,5 +63,40 @@ public class MouseFollowCamera : Singleton<MouseFollowCamera>
 
         // --- NHÌN PLAYER ---
         transform.LookAt(target);
+    }
+    public void PlayVignetteSmoothnessEffect()
+    {
+        if (profile == null) return;
+
+        var vignette = profile.vignette;
+        if (vignette == null) return;
+
+        // Bật hiệu ứng
+        vignette.enabled = true;
+
+        float randomValue = UnityEngine.Random.Range(0.38f, 0.86f);
+
+        // Lấy settings kiểu struct
+        var settings = vignette.settings;
+
+        // Tween trực tiếp trên DOTween
+        DOTween.To(
+                () => settings.smoothness,
+                x =>
+                {
+                    settings.smoothness = x;
+                    vignette.settings   = settings; // Gán lại vì đây là struct
+                },
+                randomValue,
+                0.1f
+            )
+            .SetEase(Ease.InOutSine)
+            .OnComplete(() =>
+            {
+                // Tắt hiệu ứng sau khi xong
+                settings.smoothness = 0f;
+                vignette.settings   = settings;
+                vignette.enabled    = false;
+            });
     }
 }

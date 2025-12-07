@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
@@ -53,6 +54,11 @@ public class PlayerController : MonoBehaviour
     public float healDelay = 5f;    // 5 giây sau khi bị đánh
     public float timeSinceDamage = 0f;
 
+    private void OnEnable()
+    {
+        TextManager.Instance.gameObject.SetActive(true);
+    }
+
     private void Start()
     {
         maxHealth = gameObject.GetComponent<PlayerAttackController>().heath;
@@ -71,8 +77,32 @@ public class PlayerController : MonoBehaviour
         Equip();
         Block();
         Kick();
-        if (Input.GetKeyDown(KeyCode.L))
+        if (Input.GetKeyDown(KeyCode.Escape))
             UIManager.Instance.ReturnMenu();
+    }
+
+    public void EndGame()
+    {
+        isDeath = true;
+        if(weapon != null)
+            weapon.SetActive(false);
+        if(weaponOnShoulder != null)
+            weaponOnShoulder.SetActive(false);
+        gameObject.GetComponent<PlayerInput>().enabled = false;
+        playerAnim.SetTrigger("isEnd"); 
+        gameObject.GetComponent<PlayerAttackController>().enabled = false;
+
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+
+        foreach (var enemy in enemies)
+        {
+            enemy.GetComponent<NavMeshAgent>().enabled = false;
+        }
+
+        DOVirtual.DelayedCall(4f, () =>
+        {
+            UIManager.Instance.ReturnMenu();
+        });
     }
 
     private void RegenHealth()

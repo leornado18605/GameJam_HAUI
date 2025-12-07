@@ -5,6 +5,7 @@ using UnityEngine;
 public class LockPick : MonoBehaviour
 {
     public Camera cam;
+    public GameObject player;
     public Transform innerLock;
     public Transform pickPosition;
 
@@ -18,14 +19,17 @@ public class LockPick : MonoBehaviour
     private float unlockAngle;
     private Vector2 unlockRange;
 
-    private float keyPressTime = 0;
+    public  GameObject safe;
+    private float      keyPressTime = 0;
 
+    public GameObject lock1;
     private bool movePick = true;
 
+    public Camera mainCamera;
     // Start is called before the first frame update
     void Start()
     {
-        newLock();
+        Cursor.lockState = CursorLockMode.None;
     }
 
     // Update is called once per frame
@@ -68,10 +72,13 @@ public class LockPick : MonoBehaviour
 
         if(lockLerp >= maxRotation -1)
         {
-            if (eulerAngle < unlockRange.y && eulerAngle > unlockRange.x)
+            if (Mathf.Abs(eulerAngle - unlockAngle) < lockRange)
+
             {
                 Debug.Log("Unlocked!");
-                newLock();
+                Win();
+                return;
+
 
                 movePick = true;
                 keyPressTime = 0;
@@ -82,11 +89,43 @@ public class LockPick : MonoBehaviour
                 transform.eulerAngles += new Vector3(0, 0, Random.Range(-randomRotation, randomRotation));
             }
         }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            safe.transform.gameObject.tag = "Safe";
+            this.gameObject.SetActive(false);
+            lock1.gameObject.SetActive(false);
+            this.mainCamera.gameObject.SetActive(true);
+            this.cam.gameObject.SetActive(false);
+            player.SetActive(true);
+
+        }
+
+        
     }
 
-    void newLock()
+    public void Play()
     {
-        unlockAngle = Random.Range(-maxAngle + lockRange, maxAngle - lockRange);
-        unlockRange = new Vector2(unlockAngle - lockRange, unlockAngle + lockRange);
+        Debug.Log("Play");
+        this.gameObject.SetActive(true);
+        lock1.gameObject.SetActive(true);
+        this.mainCamera.gameObject.SetActive(false);
+        this.cam.gameObject.SetActive(true);
+        player.SetActive(false);
+    }
+
+    void Win()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        this.lock1.gameObject.SetActive(false);
+        safe.gameObject.SetActive(false);
+        this.gameObject.SetActive(false);
+        this.mainCamera.gameObject.SetActive(true);
+        this.cam.gameObject.SetActive(false);
+        player.SetActive(true);
+        // Hien thu
+        TextManager.Instance.gameObject.SetActive(true);
+        player.transform.gameObject.GetComponent<PlayerAttackController>().win2 = true;
+        TextManager.Instance.text.text = "Con gái yêu quý,\n\nKhi con bước vào căn phòng phía trước, con sẽ thấy 'chúng ta'. Con sẽ thấy ba, mẹ và con đang cười đùa trong khu vườn ngập nắng.\n\nNhưng làm ơn, đừng chạm vào nó. Đó là lời nói dối ngọt ngào nhất thế gian.\n\nĐể cứu con, để cứu linh hồn của những người dân đang bị mắc kẹt ngoài kia, ba phải làm một điều tàn nhẫn. Ba phải đập vỡ 'hy vọng' đó. Ba phải phá hủy Viên Đá.\n\nCó thể ba sẽ biến mất vĩnh viễn, không còn luân hồi, không còn ký ức. Nhưng ít nhất, con sẽ có một tương lai thật sự.\n\nSống tốt nhé, Elly. Đừng nhìn lại.";
     }
 }

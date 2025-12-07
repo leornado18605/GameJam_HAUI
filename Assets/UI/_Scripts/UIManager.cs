@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -51,6 +52,8 @@ public class UIManager : MonoBehaviour
     private bool isGameStarted = false;
     private bool returningFromGame = false;
     private bool startingNewGame = false;
+    public GameObject Canvas;
+    public GameObject Credit;
 
 
     // -----------------------
@@ -313,7 +316,17 @@ public class UIManager : MonoBehaviour
     }
 
 
-    public void AboutUs() => Debug.Log("Open About Us");
+    public void AboutUs()
+    {
+        this.Canvas.gameObject.SetActive(false);
+        Credit.SetActive(true);
+        DOVirtual.DelayedCall(17f, () =>
+        {
+            this.Canvas.gameObject.SetActive(true);
+            Credit.SetActive(false);
+        });
+
+    }
     public void ExitGame() => Application.Quit();
 
 

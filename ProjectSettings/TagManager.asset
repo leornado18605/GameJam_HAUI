@@ -7,6 +7,7 @@ TagManager:
   - Boss
   - CinemachineTarget
   - Enemy
+  - Safe
   layers:
   - Default
   - TransparentFX
@@ -16,11 +17,11 @@ TagManager:
   - UI
   - Weapon
   - Player
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Image
+  - UiMinigame1
+  - ImageMini
+  - minigame2
+  - minigame3
   - 
   - 
   - 

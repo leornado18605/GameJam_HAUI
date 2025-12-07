@@ -9,8 +9,9 @@ public class EnemyAttack : MonoBehaviour
 
     public void GetDamage(float damage)
     {
+        Debug.Log(damage);
         health -= damage;
-        
+        SoundManager.Instance.PlaySFX(SoundManager.Instance.hitClip);
         gameObject.GetComponent<AIController>().Hit();
         if (health <= 0)
         {

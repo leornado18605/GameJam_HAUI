@@ -33,6 +33,7 @@ public class CameraController : MonoBehaviour
     [SerializeField] private Transform                 screamSpawnPoint;
     [SerializeField] private GameObject                Ob1;
     [SerializeField] private GameObject Ob2;
+    [SerializeField] private GameObject Ob3;
     private void Awake()
     {
         profile            = postProcess as UnityEngine.PostProcessing.PostProcessingProfile;
@@ -82,6 +83,7 @@ public class CameraController : MonoBehaviour
                 DOVirtual.DelayedCall(12f, () =>
                     {
                         Ob1.SetActive(true);
+                        Ob3.SetActive(true);
                         Ob2.SetActive(false);
                     }
 
