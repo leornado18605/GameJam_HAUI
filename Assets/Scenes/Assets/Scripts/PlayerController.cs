@@ -84,6 +84,7 @@ public class PlayerController : MonoBehaviour
     public void TakeWeapon(GameObject weapon)
     {
         isEquipped = false;
+        if(weapon == null) return;
         var currentWeapon = this.weapon;
         var currentOnShoulder = this.weaponOnShoulder;
         this.weapon = weapon;

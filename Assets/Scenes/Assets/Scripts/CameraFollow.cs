@@ -3,10 +3,19 @@ using UnityEngine;
 public class MouseFollowCamera : MonoBehaviour
 {
     public Transform player;
+
+    [Header("Camera Settings")]
     public float mouseSensitivity = 300f;
     public float distance = 5f;
     public float height = 2f;
     public float smoothSpeed = 10f;
+
+    [Header("Collision Settings")]
+    public float collisionOffset = 0.3f;   // khoảng cách đẩy camera ra khỏi tường
+    public LayerMask collisionMask; 
+    
+    private Vector3 currentVelocity;   // cho SmoothDamp
+    public float smoothTime = 0.15f; // chọn layer tường / map
 
     private float yaw;
     private float pitch;
@@ -20,9 +29,9 @@ public class MouseFollowCamera : MonoBehaviour
 
     void LateUpdate()
     {
-        if (player == null) return;
+        if (!player) return;
 
-        // --- 1. Input chuột ---
+        // --- INPUT CHUỘT ---
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
 
@@ -30,30 +39,27 @@ public class MouseFollowCamera : MonoBehaviour
         pitch -= mouseY;
         pitch = Mathf.Clamp(pitch, minPitch, maxPitch);
 
-        // --- 2. AUTO CAMERA TURN khi nhấn A/D/S ---
-        float horizontal = Input.GetAxis("Horizontal");   // A/D
-        //float vertical = Input.GetAxis("Vertical");       // W/S
-
-        if (horizontal != 0 )   // Nhấn A/D hoặc đi lùi
-        {
-            // Camera auto xoay về hướng player đang facing
-            yaw = Mathf.Lerp(yaw, player.eulerAngles.y, Time.deltaTime * 5f);
-        }
-
-        // --- 3. Tính vị trí camera ---
+        // --- TÍNH VỊ TRÍ CAMERA LÝ TƯỞNG ---
         Quaternion rot = Quaternion.Euler(pitch, yaw, 0);
-        Vector3 offset = rot * new Vector3(0, 0, -distance);
-        Vector3 targetPos = player.position + Vector3.up * height + offset;
+        Vector3 idealOffset = rot * new Vector3(0, 0, -distance);
+        Vector3 target = player.position + Vector3.up * height;
 
-        transform.position = Vector3.Lerp(transform.position, targetPos, smoothSpeed * Time.deltaTime);
+        Vector3 idealPos = target + idealOffset;
 
-        // --- 4. Camera nhìn player ---
-        transform.LookAt(player.position + Vector3.up * height);
+        // --- CAMERA COLLISION ---
+        Vector3 finalPos = idealPos;
+        RaycastHit hit;
 
-        // --- 5. Player xoay theo camera khi có input ---
-        if (horizontal != 0 )
+        if (Physics.Raycast(target, (idealPos - target).normalized, out hit, distance, collisionMask))
         {
-            player.rotation = Quaternion.Euler(0, yaw, 0);
+            finalPos = hit.point + hit.normal * collisionOffset;
+            finalPos.y += 0.3f;
         }
+
+    // --- SMOOTH CAMERA (fix jitter 100%) ---
+        transform.position = Vector3.SmoothDamp(transform.position, finalPos, ref currentVelocity, smoothTime);
+
+    // --- LOOK AT ---
+        transform.LookAt(target);
     }
 }
