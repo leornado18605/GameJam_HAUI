@@ -98,6 +98,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 2
+  damage: 0
 --- !u!65 &6796310455441548960
 BoxCollider:
   m_ObjectHideFlags: 0

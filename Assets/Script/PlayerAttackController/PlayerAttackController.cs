@@ -3,6 +3,7 @@ using UnityEngine;
 public class PlayerAttackController : MonoBehaviour
 {
     [Header("Stats")]
+    public GameObject hitEffect;
     public float attackRange = 1.5f; 
     public float damage = 10f;
     public float heath = 100f;
@@ -62,7 +63,14 @@ public class PlayerAttackController : MonoBehaviour
 
     public void TakeDamage()
     {
-        if(target != null)
+        if (target != null)
+        {
             target.GetDamage(damage);
+            var effect = Instantiate(hitEffect, target.transform.position, Quaternion.identity);
+            effect.GetComponent<ParticleSystem>().Play();
+            effect.transform.localScale *= 3.0f;
+            Destroy(effect,1f);
+        }
+            
     }
 }
