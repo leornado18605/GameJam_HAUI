@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class MouseFollowCamera : MonoBehaviour
+public class MouseFollowCamera : Singleton<MouseFollowCamera>
 {
     public Transform player;
 
@@ -9,13 +9,11 @@ public class MouseFollowCamera : MonoBehaviour
     public float distance = 5f;
     public float height = 2f;
     public float smoothSpeed = 10f;
+    public float smoothCam = 10f;
 
     [Header("Collision Settings")]
     public float collisionOffset = 0.3f;   // khoảng cách đẩy camera ra khỏi tường
-    public LayerMask collisionMask; 
-    
-    private Vector3 currentVelocity;   // cho SmoothDamp
-    public float smoothTime = 0.15f; // chọn layer tường / map
+    public LayerMask collisionMask;        // chọn layer tường / map
 
     private float yaw;
     private float pitch;
@@ -25,11 +23,13 @@ public class MouseFollowCamera : MonoBehaviour
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
+        mouseSensitivity = PlayerPrefs.GetFloat("MouseSensitivity", mouseSensitivity);
     }
 
     void LateUpdate()
     {
         if (!player) return;
+        
 
         // --- INPUT CHUỘT ---
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
@@ -48,18 +48,12 @@ public class MouseFollowCamera : MonoBehaviour
 
         // --- CAMERA COLLISION ---
         Vector3 finalPos = idealPos;
-        RaycastHit hit;
+        
 
-        if (Physics.Raycast(target, (idealPos - target).normalized, out hit, distance, collisionMask))
-        {
-            finalPos = hit.point + hit.normal * collisionOffset;
-            finalPos.y += 0.3f;
-        }
+        // --- SMOOTH CAMERA ---
+        transform.position = Vector3.Lerp(transform.position, finalPos, smoothCam );
 
-    // --- SMOOTH CAMERA (fix jitter 100%) ---
-        transform.position = Vector3.SmoothDamp(transform.position, finalPos, ref currentVelocity, smoothTime);
-
-    // --- LOOK AT ---
+        // --- NHÌN PLAYER ---
         transform.LookAt(target);
     }
 }

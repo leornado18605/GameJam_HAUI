@@ -67,6 +67,7 @@ public class AIController : MonoBehaviour
     public void Die()
     {
         gameObject.layer = LayerMask.NameToLayer("Default");
+        gameObject.GetComponent<NavMeshAgent>().enabled = false;
         anim.SetTrigger("isDeath");
     }
     
@@ -99,7 +100,7 @@ public class AIController : MonoBehaviour
 
         if (_target != null && Vector3.Distance(transform.position, _target.position) <= detectionDistance)
         {
-            _target.GetComponent<PlayerAttackController>().heath -= damage;
+            _target.GetComponent<PlayerAttackController>().GetDamage(damage);
             Debug.Log(_target.GetComponent<PlayerAttackController>().heath);
         }
     }

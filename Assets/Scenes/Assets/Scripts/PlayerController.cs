@@ -1,6 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
+using UnityEngine.AI;
+using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 
 public class PlayerController : MonoBehaviour
 {
@@ -33,6 +37,8 @@ public class PlayerController : MonoBehaviour
     //Blocking Parameters
     public bool isBlocking;
 
+    public bool isDeath = false;
+
     //Kick Parameters
     public bool isKicking;
 
@@ -40,21 +46,76 @@ public class PlayerController : MonoBehaviour
     public bool isAttacking;
     private float timeSinceAttack;
     public int currentAttack = 0;
-
     
+    
+    public float maxHealth = 100f;
+    public float healAmount = 5f;   // hồi mỗi tick
+    public float healDelay = 5f;    // 5 giây sau khi bị đánh
+    public float timeSinceDamage = 0f;
 
+    private void Start()
+    {
+        maxHealth = gameObject.GetComponent<PlayerAttackController>().heath;
+    }
 
     private void Update()
     {
+        if(isDeath) return;
         timeSinceAttack += Time.deltaTime;
 
+        timeSinceDamage += Time.deltaTime; 
+
+        RegenHealth();  
+
         Attack();
-
-
         Equip();
         Block();
         Kick();
+        if (Input.GetKeyDown(KeyCode.L))
+            UIManager.Instance.ReturnMenu();
     }
+
+    private void RegenHealth()
+    {
+        // nếu nhân vật chết thì không hồi
+        if (isDeath) return;
+
+        // chưa đủ 5s → không hồi
+        if (timeSinceDamage < healDelay) return;
+        
+        if(maxHealth ==  gameObject.GetComponent<PlayerAttackController>().heath) return;
+
+        // hồi máu từ từ
+        gameObject.GetComponent<PlayerAttackController>().heath += healAmount ;
+        UpdateStatus.Instance.OnUpdateHealth(gameObject.GetComponent<PlayerAttackController>().heath/maxHealth);
+        timeSinceDamage = 2f;
+        gameObject.GetComponent<PlayerAttackController>().heath = Mathf.Clamp(gameObject.GetComponent<PlayerAttackController>().heath, 0, maxHealth);
+    }
+
+    public void Die()
+    {
+        isDeath = true;
+        if(weapon != null)
+            weapon.SetActive(false);
+        if(weaponOnShoulder != null)
+            weaponOnShoulder.SetActive(false);
+        gameObject.GetComponent<PlayerInput>().enabled = false;
+        playerAnim.SetTrigger("isDeath"); 
+        gameObject.GetComponent<PlayerAttackController>().enabled = false;
+
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+
+        foreach (var enemy in enemies)
+        {
+            enemy.GetComponent<NavMeshAgent>().enabled = false;
+        }
+
+        DOVirtual.DelayedCall(4f, () =>
+        {
+            UIManager.Instance.ReturnMenu();
+        });
+    }
+
 
     private void Equip()
     {
@@ -104,6 +165,7 @@ public class PlayerController : MonoBehaviour
             this.weapon.SetActive(false);
             
             weapon.gameObject.layer = LayerMask.NameToLayer("Default");
+            UpdateStatus.Instance.OnUpdateWeapon(this.weapon.GetComponent<Weapon>().id - 1);
             weapon.SetActive(false);
             
         }
@@ -130,7 +192,7 @@ public class PlayerController : MonoBehaviour
 
     public void Kick()
     {
-        if (Input.GetKey(KeyCode.LeftControl) && playerAnim.GetBool("Grounded"))
+        if (Input.GetKey(KeyCode.K) && playerAnim.GetBool("Grounded"))
         {
             playerAnim.SetBool("Kick", true);
             isKicking = true;
