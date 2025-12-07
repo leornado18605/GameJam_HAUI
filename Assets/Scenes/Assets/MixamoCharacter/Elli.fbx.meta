@@ -3,7 +3,167 @@ guid: 0d2e3d699a3f6d44792e7ea2fe28f60b
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ModelBackpack2_Material003
+    second: {fileID: 2100000, guid: f8b6615fc4b90154cb688d52f9075263, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ModelBackpack3_Material004
+    second: {fileID: 2100000, guid: 16bafb8bcf0288849990adfe2a5eb953, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ModelBackpack4_Material005
+    second: {fileID: 2100000, guid: ca035a0412b2a7c4cbe1cadc5e8992cd, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ModelBackpack_Eagle_Material001
+    second: {fileID: 2100000, guid: 069b54aba475de9449aef9aad09e53a1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ModelBackpack_Material006
+    second: {fileID: 2100000, guid: 88b9f625b14d73c48937b51b3d0e926b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ModelBackpack_Rocket_Material00
+    second: {fileID: 2100000, guid: ee0bd332798f260439a8845bcf75dba7, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ModelBrows_Material007
+    second: {fileID: 2100000, guid: 1642ca6af4e4cb746a37c0b44ac10dce, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ModelEyes_Material008
+    second: {fileID: 2100000, guid: 7006fa3f083328a48aa0d1a24bd69620, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ModelGlovesL_Material009
+    second: {fileID: 2100000, guid: e0fe178fbe3e56443a19ff9f68bf8d3a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ModelGlovesR_Material010
+    second: {fileID: 2100000, guid: a6a6ed25cc8f53b47813d98cabbd03bc, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ModelHair_fly2_Material011
+    second: {fileID: 2100000, guid: 3cd6af20ed7e4c543a672dd19192ac19, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ModelHair_fly_Material012
+    second: {fileID: 2100000, guid: b134ffa1937d7d94bae1e526d45a6dfe, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ModelHair_thick2_Material013
+    second: {fileID: 2100000, guid: 48dd0b1d821a2fd4d9ad6ca913d6785d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ModelHair_thick3_Material014
+    second: {fileID: 2100000, guid: 8f3b028ea152c104396504ceb7456d22, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ModelHair_thick_Material015
+    second: {fileID: 2100000, guid: e483b91d9b477eb429488efd75cdeac6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ModelHair_thin2_Material016
+    second: {fileID: 2100000, guid: 91561d2a73ce9e24982f28cec07575e2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ModelHair_thin3_Material017
+    second: {fileID: 2100000, guid: e0a152ab85ef88d40ac627e031963711, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ModelHair_thin4_Material018
+    second: {fileID: 2100000, guid: 5c8e72d940786d844bbbde21147e5fef, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ModelHair_thin_Material019
+    second: {fileID: 2100000, guid: 4f5345dffa5d8de43a10a678fdb96e7a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ModelHead2_Material020
+    second: {fileID: 2100000, guid: 676a7a43b4742864496353a91d54febc, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ModelHead_Material021
+    second: {fileID: 2100000, guid: 5040586d53786f94d97453a57abf0eab, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ModelHoodie_Material022
+    second: {fileID: 2100000, guid: 41aa51d968c30414cbf19fe3a8bb8720, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ModelInner_Material023
+    second: {fileID: 2100000, guid: 1768daf73b281ef4a86e91631a0d69b7, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ModelJacket2_Material024
+    second: {fileID: 2100000, guid: 0e65ecd98ad8f404a857680775b0edcb, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ModelJacket3_Material025
+    second: {fileID: 2100000, guid: 840d27e9695f2fc46956f5de4ed2bcfd, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ModelJacket4_Material026
+    second: {fileID: 2100000, guid: 0f88ff5614c017940a3edc21dd1da5b2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ModelJacket_Material027
+    second: {fileID: 2100000, guid: 54fcd40c94ebf7440b5411855dd6ff17, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ModelLashes_Material028
+    second: {fileID: 2100000, guid: ecf970b80d2169740ac392b7573efde8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ModelMouth_Material029
+    second: {fileID: 2100000, guid: 1afceed94a87c814c86168cba875dbcd, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ModelPants_Material030
+    second: {fileID: 2100000, guid: 895f209ff9115924b8b11095d409e089, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ModelShoes_Material031
+    second: {fileID: 2100000, guid: 33e7fabb1dbce354d92e657e8e4cf5c2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ModelTears_Material032
+    second: {fileID: 2100000, guid: 6ce588de41615b048aad60252cefe500, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

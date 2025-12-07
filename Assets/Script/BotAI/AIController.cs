@@ -9,6 +9,7 @@ public class AIController : MonoBehaviour
 
     [Header("Detection Settings")]
     [SerializeField] private float detectionRadius = 12f;
+    [SerializeField] private float detectionDistance = 2f;
     [SerializeField] private string targetTag = "Player";
 
     [SerializeField] private float walkSpeed = 5f;
@@ -20,6 +21,13 @@ public class AIController : MonoBehaviour
     private float        _timer;
 
     private Transform _target;
+
+    public Transform Target
+    {
+        get => _target;
+        set => _target = value;
+    }
+
     private bool      _isChasing = false;
 
     public void Initialize(IAgentProvider provider)
@@ -51,7 +59,51 @@ public class AIController : MonoBehaviour
             ChaseBehavior();
         else
             WanderBehavior();
+        
+        Attack();
+        
     }
+
+    public void Die()
+    {
+        gameObject.layer = LayerMask.NameToLayer("Default");
+        anim.SetTrigger("isDeath");
+    }
+    
+    public void Hit()
+    {
+        anim.SetTrigger("isHit");
+    }
+
+    public void Attack()
+    {
+        if (_target != null && Vector3.Distance(transform.position, _target.position) <= detectionDistance)
+        {
+            anim.SetTrigger("isAttack");
+            // 👉 Nếu có target thì xoay về phía target
+            
+                Vector3 dir = (_target.gameObject.transform.position - transform.position).normalized;
+                dir.y = 0; 
+
+                if (dir != Vector3.zero)
+                {
+                    Quaternion lookRot = Quaternion.LookRotation(dir);
+                    transform.rotation = Quaternion.Slerp(transform.rotation, lookRot, 0.7f);
+                }
+            
+        }
+    }
+    
+    public void TakeDamage(float damage)
+    {
+
+        if (_target != null && Vector3.Distance(transform.position, _target.position) <= detectionDistance)
+        {
+            _target.GetComponent<PlayerAttackController>().heath -= damage;
+            Debug.Log(_target.GetComponent<PlayerAttackController>().heath);
+        }
+    }
+    
     private void DetectTarget()
     {
         Collider[] hits = Physics.OverlapSphere(transform.position, detectionRadius);
