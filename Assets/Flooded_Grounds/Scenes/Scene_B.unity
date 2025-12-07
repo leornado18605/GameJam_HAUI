@@ -88362,6 +88362,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 4438790357263697267, guid: 07d389f36e9c48d4a925fc8fade2164e, type: 3}
+      propertyPath: hitEffect
+      value: 
+      objectReference: {fileID: 3415366103933829997, guid: 62adb402a85bd7d4c8584634b8ce658a, type: 3}
     - target: {fileID: 4516996360180699262, guid: 07d389f36e9c48d4a925fc8fade2164e, type: 3}
       propertyPath: m_Layer
       value: 7
@@ -120455,11 +120459,11 @@ PrefabInstance:
       objectReference: {fileID: 6938343}
     - target: {fileID: 7175575251470731304, guid: f6d148d888ffbf54b9afe9936dfaec1f, type: 3}
       propertyPath: smoothTime
-      value: 0.5
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: 7175575251470731304, guid: f6d148d888ffbf54b9afe9936dfaec1f, type: 3}
       propertyPath: collisionMask.m_Bits
-      value: 128
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8944336655422409498, guid: f6d148d888ffbf54b9afe9936dfaec1f, type: 3}
       propertyPath: m_Name
