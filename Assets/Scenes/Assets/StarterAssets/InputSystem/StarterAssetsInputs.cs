@@ -32,7 +32,7 @@ namespace StarterAssets
         public void OnMove(InputValue value)
 		{
 			MoveInput(value.Get<Vector2>());
-			Debug.Log(move);
+			
 		}
 
 		public void OnLook(InputValue value)

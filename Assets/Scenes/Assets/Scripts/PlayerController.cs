@@ -11,9 +11,21 @@ public class PlayerController : MonoBehaviour
 
     //Equip-Unequip parameters
     [SerializeField]
-    private GameObject sword;
+    private GameObject weapon;
     [SerializeField]
-    private GameObject swordOnShoulder;
+    private List<Weapon> weapons;
+    public GameObject Weapon
+    {
+        get => weapon;
+        set => weapon = value;
+    }
+
+    [SerializeField]
+    private GameObject weaponOnShoulder;
+    [SerializeField]
+    private List<Weapon> weaponOnShoulders;
+    [SerializeField]
+    private List<GameObject> weaponOnShouldersPrefabs;
     public bool isEquipping;
     public bool isEquipped;
 
@@ -46,7 +58,7 @@ public class PlayerController : MonoBehaviour
 
     private void Equip()
     {
-        if (Input.GetKeyDown(KeyCode.R) && playerAnim.GetBool("Grounded"))
+        if (Input.GetKeyDown(KeyCode.R) && playerAnim.GetBool("Grounded") && weapon != null)
         {
             isEquipping = true;
             playerAnim.SetTrigger("Equip");
@@ -57,15 +69,43 @@ public class PlayerController : MonoBehaviour
     {
         if (!isEquipped)
         {
-            sword.SetActive(true);
-            swordOnShoulder.SetActive(false);
+            weapon.SetActive(true);
+            weaponOnShoulder.SetActive(false);
             isEquipped = !isEquipped;
         }
         else
         {
-            sword.SetActive(false);
-            swordOnShoulder.SetActive(true);
+            weapon.SetActive(false);
+            weaponOnShoulder.SetActive(true);
             isEquipped = !isEquipped;
+        }
+    }
+
+    public void TakeWeapon(GameObject weapon)
+    {
+        isEquipped = false;
+        if(weapon == null) return;
+        var currentWeapon = this.weapon;
+        var currentOnShoulder = this.weaponOnShoulder;
+        this.weapon = weapon;
+        if (this.weapon != null)
+        {
+            this.weapon = this.weapons[this.weapon.GetComponent<Weapon>().id - 1].gameObject;
+            weaponOnShoulder = this.weaponOnShoulders[this.weapon.GetComponent<Weapon>().id - 1].gameObject;
+            if (currentWeapon != null && currentOnShoulder != null)
+            {
+                var newWeapon = Instantiate(weaponOnShouldersPrefabs[currentWeapon.GetComponent<Weapon>().id-1],gameObject.transform.position+Vector3.up*0.1f,weapon.transform.rotation);
+                newWeapon.gameObject.layer = LayerMask.NameToLayer("Weapon");
+                newWeapon.SetActive(true);
+                currentWeapon.SetActive(false);
+                currentOnShoulder.SetActive(false);
+            }
+            weaponOnShoulder.SetActive(true);
+            this.weapon.SetActive(false);
+            
+            weapon.gameObject.layer = LayerMask.NameToLayer("Default");
+            weapon.SetActive(false);
+            
         }
     }
 
