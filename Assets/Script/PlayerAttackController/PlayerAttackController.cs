@@ -68,7 +68,7 @@ public class PlayerAttackController : MonoBehaviour
             target.GetDamage(damage);
             var effect = Instantiate(hitEffect, target.transform.position, Quaternion.identity);
             effect.GetComponent<ParticleSystem>().Play();
-            effect.transform.localScale *= 3.0f;
+            effect.transform.localScale *= 1.0f;
             Destroy(effect,1f);
         }
             
