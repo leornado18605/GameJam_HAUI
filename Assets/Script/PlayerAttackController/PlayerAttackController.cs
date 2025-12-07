@@ -47,7 +47,6 @@ public class PlayerAttackController : MonoBehaviour
 
         if (hits.Length > 0)
         {
-            Debug.Log(hits[0].gameObject.name);
             return hits[0].gameObject;
         }
             
@@ -65,12 +64,26 @@ public class PlayerAttackController : MonoBehaviour
     {
         if (target != null)
         {
+            gameObject.GetComponent<PlayerController>().timeSinceDamage = 0f;
             target.GetDamage(damage);
             var effect = Instantiate(hitEffect, target.transform.position, Quaternion.identity);
             effect.GetComponent<ParticleSystem>().Play();
             effect.transform.localScale *= 1.0f;
+            effect.transform.position += Vector3.up * 1f;
             Destroy(effect,1f);
         }
             
+    }
+
+    public void GetDamage(float damage)
+    {
+        gameObject.GetComponent<PlayerController>().timeSinceDamage = 0f;
+        if(gameObject.GetComponent<PlayerController>().isDeath) return;
+        heath -= damage;
+        UpdateStatus.Instance.OnUpdateHealth(heath/gameObject.GetComponent<PlayerController>().maxHealth);
+        if (heath <= 0)
+        {
+            gameObject.GetComponent<PlayerController>().Die();
+        }
     }
 }
